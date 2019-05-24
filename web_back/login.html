@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css" />
 </head>
 
 <body>
@@ -29,8 +30,73 @@
             </form>
         </div>
 
-    </div> 
+    </div>
+    <!-- bootstarp的弹出框 -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">提示框</h4>
+                </div>
+                <div class="modal-body my-modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 </body>
 
 </html>
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        $(".input_sub").click(function (e) {
+            e.preventDefault()
+            var user_name = $(".input_txt").val().trim()
+            var password = $(".input_pass").val().trim()
+            if (user_name == "" || password == "") {
+                $('.my-modal-body').text('记得输入用户名和密码哦！！')
+                $('#myModal').modal()
+                return
+            }
+            $.ajax({
+                url: 'https://autumnfish.cn/big/admin/login',
+                type: 'post',
+                data: {
+                    user_name: user_name,
+                    password: password
+                },
+                success: function (backData) {
+                    //   console.log(backData)
+                    if (backData.code == 400) {
+                        // alert('哥们，用户名或密码错了哦，你是机器人吗？')
+                        $('.my-modal-body').text('输入错误！！')
+                        $('#myModal').modal()
+                    } else if (backData.code == 200) {
+                        // 去首页
+                        window.location.href = './index.html'
+                    }
+                }
+            })
+        })
+    })
+
+
+
+
+
+
+
+
+
+
+
+</script>
